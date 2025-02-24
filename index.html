@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBOKA CONNECT - Données Privées par Poste</title>
+  
+  <!-- Styles CSS avec variables pour centraliser la configuration des couleurs -->
+  <style>
+    :root {
+      --primary-bg: #FF7043; /* Pour d'autres éléments si besoin */
+      --secondary-bg: #FF5722;
+      --light-bg: #FFF2E3;
+      --highlight: #FFCC80;
+      --text-color: #FFFFFF;
+      --border-color: #fff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 20px;
+      background: url("https://img.freepik.com/photos-gratuite/art-numerique-equipe-travail_23-2151492120.jpg?t=st=1740397488~exp=1740401088~hmac=16dec3aee43bd5834cdb4db19e340c0b0daaa231f2dd35d82b8ac37de987c4b9&w=1380") no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+    }
+    header, main {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    /* Nouveau header avec logo et titre */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header img {
+      width: 150px; /* Ajustez la largeur selon vos préférences */
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-size: 36px;
+      margin-top: 10px;
+    }
+    .container {
+      /* Pour les autres sections, on utilisera cette base */
+      background-color: var(--secondary-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+    /* Section de connexion transparente */
+    #login-section {
+      background-color: rgba(255, 87, 34, 0.5);
+    }
+    /* Tableau de bord avec fond sombre semi-transparent pour tamiser l'image d'arrière-plan */
+    #dashboard {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, button {
+      font-size: 16px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+      background-color: var(--light-bg);
+      color: var(--secondary-bg);
+    }
+    button {
+      background-color: var(--light-bg);
+      color: var(--secondary-bg);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: var(--highlight);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    th {
+      background-color: #FF8A65;
+    }
+    tr:nth-child(even) {
+      background-color: var(--primary-bg);
+    }
+    tr:hover {
+      background-color: var(--highlight);
+    }
+    .button-small {
+      padding: 5px 10px;
+      font-size: 14px;
+      background-color: var(--light-bg);
+      color: var(--secondary-bg);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .button-small:hover {
+      background-color: var(--highlight);
+    }
+    .form-container input[type="text"],
+    .form-container input[type="tel"] {
+      width: calc(50% - 12px);
+      display: inline-block;
+    }
+    .form-container button {
+      width: 100%;
+    }
+    .logout-button {
+      background-color: var(--secondary-bg);
+      color: var(--text-color);
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .logout-button:hover {
+      background-color: #FF8A65;
+    }
+    /* Styles pour le rapport et les statistiques */
+    #statistics-report {
+      background-color: var(--light-bg);
+      color: var(--secondary-bg);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    /* Styles du filtre de rapport */
+    #report-filter-container {
+      margin-bottom: 10px;
+      padding: 8px;
+      background-color: var(--light-bg);
+      border-radius: 5px;
+      color: var(--secondary-bg);
+    }
+    #report-filter-container label {
+      margin-right: 5px;
+    }
+    /* Barres de recherche et calendriers */
+    #search-container, 
+    #appointment-search-container, 
+    #calendar-container, 
+    #appointment-calendar-container {
+      margin-bottom: 10px;
+    }
+    #search-phone, #search-appointment-phone {
+      padding: 8px;
+      width: calc(100% - 110px);
+      display: inline-block;
+    }
+    #search-container button, #appointment-search-container button {
+      width: 100px;
+      display: inline-block;
+    }
+    #contact-calendar, #appointment-calendar {
+      padding: 8px;
+      width: calc(100% - 220px);
+      display: inline-block;
+    }
+    #calendar-container button, #appointment-calendar-container button {
+      width: 100px;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    /* Section d'importation de fichiers */
+    #fileImport-section {
+      margin-top: 20px;
+      background-color: var(--light-bg);
+      color: var(--secondary-bg);
+      padding: 15px;
+      border-radius: 5px;
+    }
+    #fileContent {
+      margin-top: 10px;
+      background-color: #fff;
+      color: #000;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 400px;
+      overflow: auto;
+    }
+    /* Zone de messages pour le retour utilisateur */
+    #message {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+    #message.info {
+      background-color: #e7f3fe;
+      color: #31708f;
+    }
+    #message.error {
+      background-color: #f2dede;
+      color: #a94442;
+    }
+  </style>
+
+  <!-- Inclusion des bibliothèques externes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <header>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUJN-y-cd7oAobBwQRaRf2a1Cep8l99KNGFw&s" alt="Logo Call Center">
+    <h1>Portail Call Center</h1>
+  </header>
+  <main>
+    <!-- Zone de message pour le retour utilisateur -->
+    <div id="message"></div>
+
+    <!-- Section de connexion (fond transparent) -->
+    <section id="login-section" class="container">
+      <h2>Connexion</h2>
+      <label for="poste-select">Sélectionnez votre poste :</label>
+      <select id="poste-select"></select>
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" placeholder="Entrez votre mot de passe" />
+      <button id="login-button">Se connecter</button>
+    </section>
+
+    <!-- Tableau de bord (accessible uniquement après connexion) -->
+    <section id="dashboard" class="container" style="display: none;">
+      <h2>Annuaire de Contacts</h2>
+      
+      <div class="form-container">
+        <h3>Enregistrer un nouveau contact</h3>
+        <input type="text" id="new-client-name" placeholder="Nom du client" />
+        <input type="tel" id="new-client-phone" placeholder="Numéro du client" />
+        <button id="add-client-button">Ajouter un client</button>
+      </div>
+      
+      <h3>Liste des contacts</h3>
+      <div id="search-container">
+        <input type="text" id="search-phone" placeholder="Rechercher un numéro" />
+        <button id="search-client-button">Rechercher</button>
+      </div>
+      <div id="calendar-container">
+        <label for="contact-calendar">Filtrer par date :</label>
+        <input type="date" id="contact-calendar" />
+        <button id="filter-contact-date-button">Filtrer</button>
+        <button id="reset-contact-filter-button">Réinitialiser</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom du Client</th>
+            <th>Numéro du Client</th>
+            <th>Fuseau Horaire</th>
+            <th>Heure Enregistrée</th>
+            <th>Type d'appel</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="client-list"></tbody>
+      </table>
+      
+      <button id="clear-contacts-button">Effacer tous les contacts</button>
+      
+      <h3>Rendez-vous</h3>
+      <div class="form-container">
+        <select id="appointment-client"></select>
+        <input type="datetime-local" id="appointment" />
+        <button id="set-appointment-button">Ajouter un rendez-vous</button>
+      </div>
+      <div id="appointment-search-container">
+        <input type="text" id="search-appointment-phone" placeholder="Rechercher un numéro dans les rendez-vous" />
+        <button id="search-appointment-button">Rechercher</button>
+      </div>
+      <div id="appointment-calendar-container">
+        <label for="appointment-calendar">Filtrer par date :</label>
+        <input type="date" id="appointment-calendar" />
+        <button id="filter-appointment-date-button">Filtrer</button>
+        <button id="reset-appointment-filter-button">Réinitialiser</button>
+      </div>
+      <h3>Liste des rendez-vous</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Rendez-vous</th>
+            <th>Contact</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="appointment-list"></tbody>
+      </table>
+      <button id="clear-appointments-button">Effacer tous les rendez-vous</button>
+      
+      <h3>Statistiques et Rapport (privés pour chaque poste)</h3>
+      <!-- Section de filtre par date pour le rapport -->
+      <div id="report-filter-container">
+        <label for="report-filter-date">Filtrer par date :</label>
+        <input type="date" id="report-filter-date" />
+        <button id="filter-report-button">Filtrer</button>
+        <button id="reset-report-filter-button">Réinitialiser</button>
+      </div>
+      <button id="update-statistics-button">Mettre à jour les statistiques</button>
+      <button id="clear-statistics-button">Effacer le rapport</button>
+      <button id="download-pdf-button">Télécharger le rapport en PDF</button>
+      <div id="statistics-report"></div>
+      
+      <h3>Importer et modifier un fichier (Word, Excel)</h3>
+      <div id="fileImport-section">
+        <input type="file" id="fileInput" accept=".docx,.xlsx" />
+        <button id="process-file-button">Importer</button>
+        <div id="fileContent"></div>
+        <!-- Boutons pour télécharger le fichier importé en PDF et effacer son contenu -->
+        <button id="download-imported-file-button">Télécharger le fichier importé en PDF</button>
+        <button id="clear-imported-file-button">Effacer le fichier importé</button>
+      </div>
+      
+      <button class="logout-button" id="logout-button">Se déconnecter</button>
+    </section>
+  </main>
+  
+  <!-- Script JavaScript -->
+  <script>
+    "use strict";
+    
+    /*************** Variables Globales et Configuration ****************/
+    // Création des postes avec mots de passe uniques
+    const postes = {};
+    let currentPoste = null;
+    for (let i = 1; i <= 20; i++) {
+      const password = `MBOKACBZ${String(i).padStart(2, '0')}`;
+      postes[`MBOKA POSTE ${i}`] = password;
+    }
+    // Ajout du poste MBOKA PRINCIPAL avec son mot de passe
+    postes["MBOKA PRINCIPAL"] = "MBOKACBZ00";
+    
+    // Fonction pour afficher des messages (info ou error)
+    function displayMessage(message, type = "info") {
+      const messageDiv = document.getElementById("message");
+      messageDiv.textContent = message;
+      messageDiv.className = type;
+      messageDiv.style.display = "block";
+      setTimeout(() => { messageDiv.style.display = "none"; }, 3000);
+    }
+    
+    // Pour rendre les données privées par poste, on préfixe chaque clé du localStorage par le poste connecté.
+    function getStorageKey(key) {
+      return `${currentPoste}-${key}`;
+    }
+    
+    // Mapping des indicatifs téléphoniques aux fuseaux horaires
+    const countryTimezones = {
+      "+1": "America/New_York",
+      "+33": "Europe/Paris",
+      "+49": "Europe/Berlin",
+      "+44": "Europe/London",
+      "+86": "Asia/Shanghai",
+      "+91": "Asia/Kolkata",
+      "+234": "Africa/Lagos",
+      "+225": "Africa/Abidjan",
+      "+213": "Africa/Algiers",
+      "+7": "Asia/Almaty",
+      "+55": "America/Sao_Paulo",
+      "+81": "Asia/Tokyo",
+      "+27": "Africa/Johannesburg",
+      "+90": "Europe/Istanbul",
+      "+61": "Australia/Sydney"
+    };
+    
+    function getTimezoneFromPhone(phoneNumber) {
+      for (const code in countryTimezones) {
+        if (phoneNumber.startsWith(code)) {
+          return countryTimezones[code];
+        }
+      }
+      return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+    
+    function displayLocalTimeFromTimestamp(createdAt, timezone, elementId) {
+      const date = new Date(createdAt);
+      const localTime = date.toLocaleString("fr-FR", { timeZone: timezone });
+      document.getElementById(elementId).textContent = `${localTime} (${timezone})`;
+    }
+    
+    /*************** Gestion des Contacts ****************/
+    function loadClients(filterDate = null) {
+      let clients = JSON.parse(localStorage.getItem(getStorageKey('contacts')) || '[]');
+      let updated = false;
+      const clientList = document.getElementById('client-list');
+      clientList.innerHTML = '';
+      
+      // Mise à jour de la liste déroulante des clients pour les rendez-vous
+      const appointmentSelect = document.getElementById('appointment-client');
+      appointmentSelect.innerHTML = '';
+      
+      // Si un filtre de date est appliqué, filtrer les contacts
+      if (filterDate) {
+        clients = clients.filter(contact => contact.createdAt && contact.createdAt.substring(0,10) === filterDate);
+      }
+      
+      clients.forEach((client, index) => {
+        if (!client.createdAt) {
+          client.createdAt = new Date().toISOString();
+          updated = true;
+        }
+        if (!client.callStatus) {
+          client.callStatus = "Éteint";
+          updated = true;
+        }
+        // Ajout du client dans la liste déroulante pour les rendez-vous
+        const option = document.createElement('option');
+        option.value = client.phone;
+        option.textContent = `${client.name} - ${client.phone}`;
+        appointmentSelect.appendChild(option);
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${client.name}</td>
+          <td>${client.phone}</td>
+          <td>${client.timezone}</td>
+          <td id="time-${index}">Chargement...</td>
+          <td>
+            <select data-index="${index}" class="call-status-select">
+              <option value="Éteint">Éteint</option>
+              <option value="Ok">Ok</option>
+              <option value="Rendez-vous">Rendez-vous</option>
+              <option value="Pas intéressé">Pas intéressé</option>
+              <option value="Pas de réponse">Pas de réponse</option>
+              <option value="Hors service">Hors service</option>
+              <option value="Demande réflexion">Demande réflexion</option>
+              <option value="Refus">Refus</option>
+              <option value="Souci financier">Souci financier</option>
+              <option value="Rappelle plus tard">Rappelle plus tard</option>
+            </select>
+          </td>
+          <td>
+            <button class="button-small delete-client-button" data-index="${index}">Supprimer</button>
+          </td>
+        `;
+        clientList.appendChild(row);
+        displayLocalTimeFromTimestamp(client.createdAt, client.timezone, `time-${index}`);
+      });
+      
+      if (updated) {
+        localStorage.setItem(getStorageKey('contacts'), JSON.stringify(clients));
+      }
+    }
+    
+    function addClient() {
+      const name = document.getElementById('new-client-name').value.trim();
+      const phone = document.getElementById('new-client-phone').value.trim();
+      if (!name || !phone) {
+        displayMessage("Veuillez remplir les informations du client.", "error");
+        return;
+      }
+      let clients = JSON.parse(localStorage.getItem(getStorageKey('contacts')) || '[]');
+      const timezone = getTimezoneFromPhone(phone);
+      const createdAt = new Date().toISOString();
+      clients.push({ name, phone, timezone, createdAt, callStatus: "Éteint" });
+      localStorage.setItem(getStorageKey('contacts'), JSON.stringify(clients));
+      loadClients();
+      document.getElementById('new-client-name').value = '';
+      document.getElementById('new-client-phone').value = '';
+      displayMessage("Contact ajouté avec succès.");
+    }
+    
+    function deleteClient(index) {
+      let clients = JSON.parse(localStorage.getItem(getStorageKey('contacts')) || '[]');
+      if (!confirm("Confirmez-vous la suppression de ce contact ?")) return;
+      clients.splice(index, 1);
+      localStorage.setItem(getStorageKey('contacts'), JSON.stringify(clients));
+      loadClients();
+      displayMessage("Contact supprimé.");
+    }
+    
+    function clearAllContacts() {
+      if (confirm("Êtes-vous sûr de vouloir effacer tous les contacts ?")) {
+        localStorage.setItem(getStorageKey('contacts'), JSON.stringify([]));
+        loadClients();
+        displayMessage("Tous les contacts ont été effacés.");
+      }
+    }
+    
+    function searchClient() {
+      const searchTerm = document.getElementById('search-phone').value.trim();
+      if (!searchTerm) return;
+      const clientList = document.getElementById('client-list');
+      const rows = clientList.getElementsByTagName('tr');
+      let found = false;
+      for (let row of rows) {
+        const phoneCell = row.cells[1];
+        if (phoneCell && phoneCell.textContent.includes(searchTerm)) {
+          row.style.backgroundColor = '#000000';
+          if (!found) row.scrollIntoView({ behavior: "smooth", block: "center" });
+          found = true;
+        } else {
+          row.style.backgroundColor = "";
+        }
+      }
+      if (!found) {
+        displayMessage("Aucun contact trouvé avec le numéro : " + searchTerm, "error");
+      }
+      document.getElementById('search-phone').value = '';
+    }
+    
+    function filterContactsByDate() {
+      const selectedDate = document.getElementById('contact-calendar').value;
+      if (!selectedDate) {
+        displayMessage("Veuillez sélectionner une date.", "error");
+        return;
+      }
+      loadClients(selectedDate);
+    }
+    
+    function resetContactFilter() {
+      document.getElementById('contact-calendar').value = '';
+      loadClients();
+    }
+    
+    /*************** Gestion des Rendez-vous ****************/
+    function loadAppointments(filterDate = null) {
+      let appointments = JSON.parse(localStorage.getItem(getStorageKey('appointments')) || '[]');
+      if (filterDate) {
+        appointments = appointments.filter(appointment => appointment.date && appointment.date.substring(0,10) === filterDate);
+      }
+      const appointmentList = document.getElementById('appointment-list');
+      appointmentList.innerHTML = '';
+      appointments.forEach((appointment, index) => {
+        const appointmentDate = new Date(appointment.date).toLocaleString('fr-FR', {
+          timeZone: 'Europe/Paris',
+          timeZoneName: 'short'
+        });
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${appointmentDate}</td>
+          <td>${appointment.name} - ${appointment.phone}</td>
+          <td>
+            <button class="button-small delete-appointment-button" data-index="${index}">Supprimer</button>
+          </td>
+        `;
+        appointmentList.appendChild(row);
+      });
+    }
+    
+    function setReminder() {
+      const appointmentTime = document.getElementById('appointment').value;
+      const appointmentSelect = document.getElementById('appointment-client');
+      const clientPhone = appointmentSelect.value;
+      if (!appointmentTime || !clientPhone) {
+        displayMessage("Veuillez sélectionner un client et définir un horaire.", "error");
+        return;
+      }
+      const selectedOption = appointmentSelect.options[appointmentSelect.selectedIndex];
+      const clientName = selectedOption.text.split(" - ")[0];
+      let appointments = JSON.parse(localStorage.getItem(getStorageKey('appointments')) || '[]');
+      appointments.push({ date: appointmentTime, phone: clientPhone, name: clientName });
+      localStorage.setItem(getStorageKey('appointments'), JSON.stringify(appointments));
+      loadAppointments();
+      document.getElementById('appointment').value = '';
+      appointmentSelect.selectedIndex = 0;
+      displayMessage("Rendez-vous ajouté.");
+    }
+    
+    function deleteAppointment(index) {
+      let appointments = JSON.parse(localStorage.getItem(getStorageKey('appointments')) || '[]');
+      if (confirm("Voulez-vous vraiment supprimer ce rendez-vous ?")) {
+        appointments.splice(index, 1);
+        localStorage.setItem(getStorageKey('appointments'), JSON.stringify(appointments));
+        loadAppointments();
+        displayMessage("Rendez-vous supprimé.");
+      } else {
+        displayMessage("Suppression annulée.");
+      }
+    }
+    
+    function clearAllAppointments() {
+      if (confirm("Êtes-vous sûr de vouloir effacer tous les rendez-vous ?")) {
+        localStorage.setItem(getStorageKey('appointments'), JSON.stringify([]));
+        loadAppointments();
+        displayMessage("Tous les rendez-vous ont été effacés.");
+      }
+    }
+    
+    function searchAppointment() {
+      const searchTerm = document.getElementById('search-appointment-phone').value.trim();
+      if (!searchTerm) return;
+      const appointmentList = document.getElementById('appointment-list');
+      const rows = appointmentList.getElementsByTagName('tr');
+      let found = false;
+      for (let row of rows) {
+        const contactCell = row.cells[1];
+        if (contactCell && contactCell.textContent.includes(searchTerm)) {
+          row.style.backgroundColor = '#000000';
+          if (!found) row.scrollIntoView({ behavior: "smooth", block: "center" });
+          found = true;
+        } else {
+          row.style.backgroundColor = "";
+        }
+      }
+      if (!found) {
+        displayMessage("Aucun rendez-vous trouvé avec le numéro : " + searchTerm, "error");
+      }
+      document.getElementById('search-appointment-phone').value = '';
+    }
+    
+    function filterAppointmentsByDate() {
+      const selectedDate = document.getElementById('appointment-calendar').value;
+      if (!selectedDate) {
+        displayMessage("Veuillez sélectionner une date.", "error");
+        return;
+      }
+      loadAppointments(selectedDate);
+    }
+    
+    function resetAppointmentFilter() {
+      document.getElementById('appointment-calendar').value = '';
+      loadAppointments();
+    }
+    
+    /*************** Statistiques et Rapport ****************/
+    function updateStatistics(filterDate = null) {
+      let totalContacts = 0;
+      let totalAppointments = 0;
+      let countEteint = 0,
+          countRdv = 0,
+          countOk = 0,
+          countPasInteresse = 0,
+          countPasDeReponse = 0,
+          countHorsService = 0,
+          countDemandeReflexion = 0,
+          countRefus = 0,
+          countSouciFinancier = 0,
+          countRappellePlusTard = 0;
+      
+      if (currentPoste === "MBOKA PRINCIPAL") {
+        // Agrégation des données des postes MBOKA POSTE 1 à 20
+        for (let i = 1; i <= 20; i++) {
+          let posteKey = `MBOKA POSTE ${i}`;
+          let contacts = JSON.parse(localStorage.getItem(posteKey + "-contacts") || '[]');
+          let appointments = JSON.parse(localStorage.getItem(posteKey + "-appointments") || '[]');
+          if (filterDate) {
+            contacts = contacts.filter(contact => contact.createdAt && contact.createdAt.substring(0,10) === filterDate);
+            appointments = appointments.filter(appointment => appointment.date && appointment.date.substring(0,10) === filterDate);
+          }
+          totalContacts += contacts.length;
+          totalAppointments += appointments.length;
+          contacts.forEach(contact => {
+            switch(contact.callStatus) {
+              case "Éteint": countEteint++; break;
+              case "Rendez-vous": countRdv++; break;
+              case "Ok": countOk++; break;
+              case "Pas intéressé": countPasInteresse++; break;
+              case "Pas de réponse": countPasDeReponse++; break;
+              case "Hors service": countHorsService++; break;
+              case "Demande réflexion": countDemandeReflexion++; break;
+              case "Refus": countRefus++; break;
+              case "Souci financier": countSouciFinancier++; break;
+              case "Rappelle plus tard": countRappellePlusTard++; break;
+            }
+          });
+        }
+      } else {
+        let contacts = JSON.parse(localStorage.getItem(getStorageKey('contacts')) || '[]');
+        let appointments = JSON.parse(localStorage.getItem(getStorageKey('appointments')) || '[]');
+        if (filterDate) {
+          contacts = contacts.filter(contact => contact.createdAt && contact.createdAt.substring(0,10) === filterDate);
+          appointments = appointments.filter(appointment => appointment.date && appointment.date.substring(0,10) === filterDate);
+        }
+        totalContacts = contacts.length;
+        totalAppointments = appointments.length;
+        contacts.forEach(contact => {
+          switch(contact.callStatus) {
+            case "Éteint": countEteint++; break;
+            case "Rendez-vous": countRdv++; break;
+            case "Ok": countOk++; break;
+            case "Pas intéressé": countPasInteresse++; break;
+            case "Pas de réponse": countPasDeReponse++; break;
+            case "Hors service": countHorsService++; break;
+            case "Demande réflexion": countDemandeReflexion++; break;
+            case "Refus": countRefus++; break;
+            case "Souci financier": countSouciFinancier++; break;
+            case "Rappelle plus tard": countRappellePlusTard++; break;
+          }
+        });
+      }
+      
+      const now = new Date();
+      const reportTimestamp = now.toLocaleString('fr-FR', {
+        timeZone: 'Europe/Paris',
+        timeZoneName: 'short'
+      });
+      
+      let reportHtml = "";
+      if (currentPoste === "MBOKA PRINCIPAL") {
+        reportHtml += `<p><strong>Poste :</strong> ${currentPoste} (Rapports agrégés de MBOKA POSTE 1 à 20)</p>`;
+      } else {
+        reportHtml += `<p><strong>Poste :</strong> ${currentPoste}</p>`;
+      }
+      if(filterDate){
+        reportHtml += `<p><strong>Filtré par :</strong> ${filterDate}</p>`;
+      }
+      reportHtml += `<p><strong>Rapport généré le :</strong> ${reportTimestamp}</p>`;
+      reportHtml += `<p><strong>Total numéros enregistrés :</strong> ${totalContacts}</p>`;
+      reportHtml += `<p><strong>Éteints :</strong> ${countEteint}</p>`;
+      reportHtml += `<p><strong>Rendez-vous :</strong> ${countRdv}</p>`;
+      reportHtml += `<p><strong>Ok :</strong> ${countOk}</p>`;
+      reportHtml += `<p><strong>Pas intéressé :</strong> ${countPasInteresse}</p>`;
+      reportHtml += `<p><strong>Pas de réponse :</strong> ${countPasDeReponse}</p>`;
+      reportHtml += `<p><strong>Hors service :</strong> ${countHorsService}</p>`;
+      reportHtml += `<p><strong>Demande réflexion :</strong> ${countDemandeReflexion}</p>`;
+      reportHtml += `<p><strong>Refus :</strong> ${countRefus}</p>`;
+      reportHtml += `<p><strong>Souci financier :</strong> ${countSouciFinancier}</p>`;
+      reportHtml += `<p><strong>Rappelle plus tard :</strong> ${countRappellePlusTard}</p>`;
+      reportHtml += `<p><strong>Total rendez-vous :</strong> ${totalAppointments}</p>`;
+      
+      document.getElementById('statistics-report').innerHTML = reportHtml;
+    }
+    
+    function clearStatistics() {
+      document.getElementById('statistics-report').innerHTML = '';
+      displayMessage("Rapport effacé.");
+    }
+    
+    // Fonction de téléchargement PDF mise à jour pour la section fichier importé
+    function downloadImportedFile() {
+      const fileContentDiv = document.getElementById("fileContent");
+      if (!fileContentDiv.innerHTML.trim()) {
+        displayMessage("Aucun contenu importé à télécharger.", "error");
+        return;
+      }
+      const opt = {
+        margin: 1,
+        filename: 'imported_file.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, scrollY: 0 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(fileContentDiv).save().then(() => {
+        displayMessage("Fichier téléchargé en PDF.");
+      });
+    }
+    
+    // Fonction de téléchargement PDF pour le rapport
+    function downloadPDF() {
+      if (!confirm("Voulez-vous vraiment télécharger le rapport et les statistiques en PDF ?")) return;
+      const element = document.getElementById('statistics-report');
+      // Forcer un reflow de l'élément
+      let dummy = element.offsetHeight;
+      // Attendre 500 ms pour s'assurer que le contenu est complètement rendu
+      setTimeout(() => {
+        const opt = {
+          margin: 1,
+          filename: 'rapport-statistiques.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, scrollY: 0 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+      }, 500);
+    }
+    
+    /*************** Importation et Modification de Fichiers ****************/
+    function processFile() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) {
+        displayMessage("Veuillez sélectionner un fichier.", "error");
+        return;
+      }
+      const fileName = file.name.toLowerCase();
+      const reader = new FileReader();
+      if (fileName.endsWith(".xlsx")) {
+        reader.onload = function(e) {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const html = XLSX.utils.sheet_to_html(worksheet);
+          document.getElementById("fileContent").innerHTML = html;
+          standardizeImportedTable();
+        };
+        reader.readAsArrayBuffer(file);
+      } else if (fileName.endsWith(".docx")) {
+        reader.onload = function(e) {
+          const arrayBuffer = e.target.result;
+          mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+            .then(function(result) {
+              document.getElementById("fileContent").innerHTML = result.value;
+              standardizeImportedTable();
+            })
+            .catch(function(err) {
+              console.error(err);
+              displayMessage("Erreur lors de la conversion du fichier Word.", "error");
+            });
+        };
+        reader.readAsArrayBuffer(file);
+      } else {
+        displayMessage("Format de fichier non supporté. Veuillez importer un fichier .docx ou .xlsx.", "error");
+      }
+    }
+    
+    function standardizeImportedTable() {
+      const fileContentDiv = document.getElementById("fileContent");
+      const importedTables = fileContentDiv.getElementsByTagName("table");
+      if (importedTables.length === 0) {
+        displayMessage("Aucun tableau trouvé dans le fichier importé.", "error");
+        return;
+      }
+      const importedTable = importedTables[0];
+      const importedRows = importedTable.getElementsByTagName("tr");
+      const newTable = document.createElement("table");
+      newTable.style.width = "100%";
+      newTable.style.borderCollapse = "collapse";
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      const headers = ["Nom du Client", "Numéro du Client", "Fuseau Horaire", "Heure Enregistrée", "Type d'appel", "Actions"];
+      headers.forEach(headerText => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        th.style.border = "1px solid var(--border-color)";
+        th.style.padding = "8px";
+        th.style.backgroundColor = "#FF8A65";
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      newTable.appendChild(thead);
+      const tbody = document.createElement("tbody");
+      let startRow = 0;
+      if (importedRows[0].getElementsByTagName("th").length > 0) {
+        startRow = 1;
+      }
+      for (let i = startRow; i < importedRows.length; i++) {
+        const importedCells = importedRows[i].getElementsByTagName("td");
+        const name = importedCells.length > 0 ? importedCells[0].textContent.trim() : "";
+        const phone = importedCells.length > 1 ? importedCells[1].textContent.trim() : "";
+        const timezone = phone ? getTimezoneFromPhone(phone) : "";
+        const recordedTime = new Date().toLocaleString("fr-FR", { timeZone: timezone || Intl.DateTimeFormat().resolvedOptions().timeZone });
+        const row = document.createElement("tr");
+        
+        const cellName = document.createElement("td");
+        cellName.textContent = name;
+        cellName.style.border = "1px solid var(--border-color)";
+        cellName.style.padding = "8px";
+        row.appendChild(cellName);
+        
+        const cellPhone = document.createElement("td");
+        cellPhone.textContent = phone;
+        cellPhone.style.border = "1px solid var(--border-color)";
+        cellPhone.style.padding = "8px";
+        row.appendChild(cellPhone);
+        
+        const cellTimezone = document.createElement("td");
+        cellTimezone.textContent = timezone;
+        cellTimezone.style.border = "1px solid var(--border-color)";
+        cellTimezone.style.padding = "8px";
+        row.appendChild(cellTimezone);
+        
+        const cellRecorded = document.createElement("td");
+        cellRecorded.textContent = recordedTime;
+        cellRecorded.style.border = "1px solid var(--border-color)";
+        cellRecorded.style.padding = "8px";
+        row.appendChild(cellRecorded);
+        
+        const cellCallType = document.createElement("td");
+        cellCallType.style.border = "1px solid var(--border-color)";
+        cellCallType.style.padding = "8px";
+        const selectCallType = document.createElement("select");
+        const options = ["Éteint", "Ok", "Rendez-vous", "Pas intéressé", "Pas de réponse", "Hors service", "Demande réflexion", "Refus", "Souci financier", "Rappelle plus tard"];
+        options.forEach(opt => {
+          const optionElement = document.createElement("option");
+          optionElement.value = opt;
+          optionElement.textContent = opt;
+          selectCallType.appendChild(optionElement);
+        });
+        selectCallType.value = "Éteint";
+        cellCallType.appendChild(selectCallType);
+        row.appendChild(cellCallType);
+        
+        const cellActions = document.createElement("td");
+        cellActions.style.border = "1px solid var(--border-color)";
+        cellActions.style.padding = "8px";
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Supprimer";
+        deleteButton.className = "button-small";
+        deleteButton.addEventListener("click", () => {
+          row.remove();
+        });
+        cellActions.appendChild(deleteButton);
+        row.appendChild(cellActions);
+        tbody.appendChild(row);
+      }
+      newTable.appendChild(tbody);
+      fileContentDiv.innerHTML = "";
+      fileContentDiv.appendChild(newTable);
+    }
+    
+    // Fonction pour effacer le contenu importé
+    function clearImportedFile() {
+      document.getElementById("fileContent").innerHTML = "";
+      document.getElementById("fileInput").value = "";
+      displayMessage("Contenu importé effacé.");
+    }
+    
+    /*************** Gestion des Événements ****************/
+    document.addEventListener("DOMContentLoaded", () => {
+      // Remplissage de la liste des postes dans la zone de connexion
+      const posteSelect = document.getElementById('poste-select');
+      Object.keys(postes).forEach(poste => {
+        const option = document.createElement('option');
+        option.value = poste;
+        option.textContent = poste;
+        posteSelect.appendChild(option);
+      });
+      
+      // Connexion / Déconnexion
+      document.getElementById("login-button").addEventListener("click", login);
+      document.getElementById("logout-button").addEventListener("click", logout);
+      
+      // Contacts
+      document.getElementById("add-client-button").addEventListener("click", addClient);
+      document.getElementById("search-client-button").addEventListener("click", searchClient);
+      document.getElementById("filter-contact-date-button").addEventListener("click", filterContactsByDate);
+      document.getElementById("reset-contact-filter-button").addEventListener("click", resetContactFilter);
+      document.getElementById("clear-contacts-button").addEventListener("click", clearAllContacts);
+      
+      // Rendez-vous
+      document.getElementById("set-appointment-button").addEventListener("click", setReminder);
+      document.getElementById("search-appointment-button").addEventListener("click", searchAppointment);
+      document.getElementById("filter-appointment-date-button").addEventListener("click", filterAppointmentsByDate);
+      document.getElementById("reset-appointment-filter-button").addEventListener("click", resetAppointmentFilter);
+      document.getElementById("clear-appointments-button").addEventListener("click", clearAllAppointments);
+      
+      // Statistiques et Rapport
+      document.getElementById("update-statistics-button").addEventListener("click", function () {
+        const filterDate = document.getElementById("report-filter-date").value;
+        updateStatistics(filterDate);
+      });
+      document.getElementById("clear-statistics-button").addEventListener("click", clearStatistics);
+      document.getElementById("download-pdf-button").addEventListener("click", downloadPDF);
+      
+      // Événements pour le filtre du rapport
+      document.getElementById("filter-report-button").addEventListener("click", function () {
+        const filterDate = document.getElementById("report-filter-date").value;
+        updateStatistics(filterDate);
+      });
+      document.getElementById("reset-report-filter-button").addEventListener("click", function () {
+        document.getElementById("report-filter-date").value = "";
+        updateStatistics();
+      });
+      
+      // Importation de fichiers
+      document.getElementById("process-file-button").addEventListener("click", processFile);
+      // Nouveaux écouteurs pour les boutons "Télécharger" et "Effacer"
+      document.getElementById("download-imported-file-button").addEventListener("click", downloadImportedFile);
+      document.getElementById("clear-imported-file-button").addEventListener("click", clearImportedFile);
+      
+      // Délégation d'événement pour la mise à jour du statut d'appel
+      document.getElementById("client-list").addEventListener("change", (event) => {
+        if (event.target && event.target.matches("select.call-status-select")) {
+          const index = event.target.getAttribute("data-index");
+          updateCallStatus(index, event.target.value);
+        }
+      });
+      
+      // Délégation pour la suppression des contacts
+      document.getElementById("client-list").addEventListener("click", (event) => {
+        if (event.target && event.target.matches("button.delete-client-button")) {
+          const index = event.target.getAttribute("data-index");
+          deleteClient(index);
+        }
+      });
+    });
+    
+    /*************** Authentification ****************/
+    function login() {
+      const selectedPoste = document.getElementById('poste-select').value;
+      const password = document.getElementById('password').value;
+      if (postes[selectedPoste] === password) {
+        currentPoste = selectedPoste;
+        // Affichage du tableau de bord avec les données privées du poste connecté
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadClients();
+        loadAppointments();
+        updateStatistics(); // Affichage initial du rapport
+        displayMessage("Connexion réussie !");
+      } else {
+        displayMessage("Mot de passe incorrect!", "error");
+      }
+    }
+    
+    function logout() {
+      // Réinitialisation uniquement de la section Rapport et Statistiques
+      document.getElementById('statistics-report').innerHTML = '';
+      
+      currentPoste = null;
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('password').value = '';
+      document.getElementById('poste-select').value = '';
+      displayMessage("Déconnexion réussie !");
+    }
+    
+    // Mise à jour du statut d'appel dans le localStorage pour le poste connecté
+    function updateCallStatus(index, newStatus) {
+      let clients = JSON.parse(localStorage.getItem(getStorageKey('contacts')) || '[]');
+      if (clients[index]) {
+        clients[index].callStatus = newStatus;
+        localStorage.setItem(getStorageKey('contacts'), JSON.stringify(clients));
+        displayMessage("Statut mis à jour.");
+      }
+    }
+  </script>
+</body>
+</html>
